@@ -24,6 +24,7 @@ public class EventListener implements Listener {
 
             Block block = Objects.requireNonNull(e.getClickedBlock());
             String blockKey = block.getType().getKey().asString();
+            ItemStack item = e.getItem();
             String itemKey = e.getMaterial().getKey().asString();
 
             if (config.getKeys(false).contains(itemKey) && Objects.equals(config.getString(itemKey + ".target"), blockKey)) {
@@ -32,6 +33,8 @@ public class EventListener implements Listener {
 
                 if (ageable.getAge() == ageable.getMaximumAge()) {
                     Inventory pInv = e.getPlayer().getInventory();
+
+                    item.setAmount(item.getAmount() - 1);
 
                     for (ItemStack dropItem : block.getDrops()) {
                         if (pInv.firstEmpty() == -1) {
