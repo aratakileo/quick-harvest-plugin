@@ -1,0 +1,17 @@
+minecraft:wheat_seeds:
+  target: minecraft:wheat
+
+minecraft:beetroot_seeds:
+  target: minecraft:beetroots
+
+minecraft:potato:
+  target: minecraft:potatoes
+
+minecraft:carrot:
+  target: minecraft:carrots
+
+minecraft:nether_wart:
+  target: minecraft:nether_wart
+
+minecraft:cocoa_beans:
+  target: minecraft:cocoa

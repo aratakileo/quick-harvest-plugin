@@ -1,0 +1,6 @@
+name: QuickHarvest
+version: '${project.version}'
+main: pextystudios.quickharvest.QuickHarvest
+api-version: 1.18
+authors: [ TeaCondemns ]
+description: Harvest the plants by right-clicking and replant again
