@@ -1,17 +1,20 @@
-minecraft:wheat_seeds:
-  target: minecraft:wheat
+sound: minecraft:block.composter.ready
 
-minecraft:beetroot_seeds:
-  target: minecraft:beetroots
+reason:
+  minecraft:wheat_seeds:
+    target: minecraft:wheat
 
-minecraft:potato:
-  target: minecraft:potatoes
+  minecraft:beetroot_seeds:
+    target: minecraft:beetroots
 
-minecraft:carrot:
-  target: minecraft:carrots
+  minecraft:potato:
+    target: minecraft:potatoes
 
-minecraft:nether_wart:
-  target: minecraft:nether_wart
+  minecraft:carrot:
+    target: minecraft:carrots
 
-minecraft:cocoa_beans:
-  target: minecraft:cocoa
+  minecraft:nether_wart:
+    target: minecraft:nether_wart
+
+  minecraft:cocoa_beans:
+    target: minecraft:cocoa

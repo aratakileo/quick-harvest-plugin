@@ -1,7 +1,5 @@
 package pextystudios.quickharvest;
 
-import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
@@ -27,16 +25,17 @@ public class EventListener implements Listener {
             ItemStack item = e.getItem();
             String itemKey = e.getMaterial().getKey().asString();
 
-            if (config.getKeys(false).contains(itemKey) && Objects.equals(config.getString(itemKey + ".target"), blockKey)) {
+            if (config.getConfigurationSection("reason").getKeys(false).contains(itemKey) && Objects.equals(config.getString("reason." + itemKey + ".target"), blockKey)) {
                 BlockData blockData = block.getBlockData();
                 Ageable ageable = (Ageable) blockData;
 
                 if (ageable.getAge() == ageable.getMaximumAge()) {
                     Inventory pInv = e.getPlayer().getInventory();
 
-                    item.setAmount(item.getAmount() - 1);
-
                     for (ItemStack dropItem : block.getDrops()) {
+                        if (item != null && item.getType() == dropItem.getType())
+                            dropItem.setAmount(dropItem.getAmount() - 1);
+
                         if (pInv.firstEmpty() == -1) {
                             int allInvAmount = 0;
                             for (ItemStack invItem : pInv.getContents()) {
@@ -50,13 +49,20 @@ public class EventListener implements Listener {
 
                             if (dropItem.getAmount() <= freeAmount)
                                 pInv.addItem(dropItem);
-                            else
-                                block.getWorld().dropItem(block.getLocation(), dropItem);
+                            else {
+                                int dropItemDropAmount = dropItem.getAmount() - freeAmount;
+
+                                dropItem.setAmount(freeAmount);
+                                pInv.addItem(dropItem.clone());
+
+                                dropItem.setAmount(dropItemDropAmount);
+                                block.getWorld().dropItemNaturally(block.getLocation(), dropItem);
+                            }
                         } else
                             pInv.addItem(dropItem);
                     }
 
-                    e.getPlayer().playSound(block.getLocation(), "block.composter.ready", 1, 1);
+                    e.getPlayer().playSound(block.getLocation(), Objects.requireNonNull(config.getString("sound")), 1, 1);
 
                     ageable.setAge(0);
                     block.setBlockData(ageable);
