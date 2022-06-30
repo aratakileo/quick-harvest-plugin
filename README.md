@@ -2,4 +2,4 @@
 # Quick Harvest [plugin for minecraft 1.18.2]
 Plugin that let you harvest the plants by right-clicking and replant again
 
-[[Download plugin]](https://github.com/TeaCondemns/quick-harvest-plugin/raw/main/quick-harvest-1.18.2.jar)
+[[Download latest version]](https://github.com/TeaCondemns/quick-harvest-plugin/releases/tag/basic-functionality)
