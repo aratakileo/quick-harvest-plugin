@@ -1,8 +1,12 @@
 package pextystudios.quickharvest;
 
+import io.papermc.paper.event.block.BlockPreDispenseEvent;
+import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
-import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,63 +15,103 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
+import pextystudios.quickharvest.util.DropUtil;
+import pextystudios.quickharvest.util.SoundUtil;
 
 public class EventListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            @NotNull FileConfiguration config = QuickHarvest.getInstance().getConfig();
+        @NotNull FileConfiguration config = QuickHarvest.getInstance().getConfig();
 
-            Block block = Objects.requireNonNull(e.getClickedBlock());
-            String blockKey = block.getType().getKey().asString();
-            ItemStack item = e.getItem();
-            String itemKey = e.getMaterial().getKey().asString();
+        if (!config.getBoolean("feature.player") || e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
-            if (config.getConfigurationSection("reason").getKeys(false).contains(itemKey) && Objects.equals(config.getString("reason." + itemKey + ".target"), blockKey)) {
-                BlockData blockData = block.getBlockData();
-                Ageable ageable = (Ageable) blockData;
+        Block block = e.getClickedBlock();
+        String blockKey = block.getType().getKey().asString();
+        ItemStack itemStack = e.getItem();
+        String itemKey = e.getMaterial().getKey().asString();
 
-                if (ageable.getAge() == ageable.getMaximumAge()) {
-                    Inventory pInv = e.getPlayer().getInventory();
+        if (!config.getConfigurationSection("reason").getKeys(false).contains(itemKey) || !blockKey.equals(config.getString("reason." + itemKey + ".target"))) return;
 
-                    for (ItemStack dropItem : block.getDrops()) {
-                        if (item != null && item.getType() == dropItem.getType())
-                            dropItem.setAmount(dropItem.getAmount() - 1);
+        Ageable ageable = (Ageable) block.getBlockData();
 
-                        if (pInv.firstEmpty() == -1) {
-                            int allInvAmount = 0;
-                            for (ItemStack invItem : pInv.getContents()) {
-                                if (invItem != null && invItem.getType() == dropItem.getType())
-                                    allInvAmount += invItem.getAmount();
-                            }
+        if (ageable.getAge() != ageable.getMaximumAge()) return;
 
-                            int freeAmount = dropItem.getMaxStackSize();
-                            freeAmount = freeAmount - (allInvAmount % freeAmount);
-                            freeAmount = freeAmount == dropItem.getMaxStackSize() ? 0 : freeAmount;
+        Inventory pInv = e.getPlayer().getInventory();
 
-                            if (dropItem.getAmount() <= freeAmount)
-                                pInv.addItem(dropItem);
-                            else {
-                                int dropItemDropAmount = dropItem.getAmount() - freeAmount;
+        for (ItemStack dropItemStack : block.getDrops()) {
+            if (itemStack != null && itemStack.getType() == dropItemStack.getType())
+                dropItemStack.setAmount(dropItemStack.getAmount() - 1);
 
-                                dropItem.setAmount(freeAmount);
-                                pInv.addItem(dropItem.clone());
+            if (pInv.firstEmpty() == -1) {
+                int allInvAmount = 0;
 
-                                dropItem.setAmount(dropItemDropAmount);
-                                block.getWorld().dropItemNaturally(block.getLocation(), dropItem);
-                            }
-                        } else
-                            pInv.addItem(dropItem);
-                    }
-
-                    e.getPlayer().playSound(block.getLocation(), Objects.requireNonNull(config.getString("sound")), 1, 1);
-
-                    ageable.setAge(0);
-                    block.setBlockData(ageable);
+                for (ItemStack invItemStack : pInv.getContents()) {
+                    if (invItemStack != null && invItemStack.getType() == dropItemStack.getType())
+                        allInvAmount += invItemStack.getAmount();
                 }
+
+                int freeAmount = dropItemStack.getMaxStackSize();
+                freeAmount = freeAmount - (allInvAmount % freeAmount);
+                freeAmount = freeAmount == dropItemStack.getMaxStackSize() ? 0 : freeAmount;
+
+                if (dropItemStack.getAmount() <= freeAmount) {
+                    pInv.addItem(dropItemStack);
+                    continue;
+                }
+
+                int dropItemDropAmount = dropItemStack.getAmount() - freeAmount;
+
+                dropItemStack.setAmount(freeAmount);
+                pInv.addItem(dropItemStack.clone());
+
+                dropItemStack.setAmount(dropItemDropAmount);
+                DropUtil.dropItem(block, dropItemStack);
+
+                continue;
             }
+
+            pInv.addItem(dropItemStack);
         }
+        SoundUtil.playSound(block, config.getString("sound"));
+
+        ageable.setAge(0);
+        block.setBlockData(ageable);
+    }
+
+    @EventHandler
+    public void onDispenserEvent(BlockPreDispenseEvent e) {
+        Block dispenser = e.getBlock();
+        @NotNull FileConfiguration config = QuickHarvest.getInstance().getConfig();
+
+        if (!config.getBoolean("feature.dispenser") || dispenser.getType() != Material.DISPENSER) return;
+
+        ItemStack itemStack = e.getItemStack();
+        String itemKey = itemStack.getType().getKey().asString();
+
+        if (!config.getConfigurationSection("reason").getKeys(false).contains(itemKey)) return;
+
+        Block cropBlock = dispenser.getRelative(((Directional) dispenser.getBlockData()).getFacing());
+
+        if (!cropBlock.getType().getKey().asString().equals(config.getString("reason." + itemKey + ".target"))) return;
+
+        Ageable cropAgeable = (Ageable) cropBlock.getBlockData();
+
+        if (cropAgeable.getMaximumAge() != cropAgeable.getAge()) return;
+
+        for (ItemStack dropItemStack: cropBlock.getDrops()) {
+            if (dropItemStack.getType() == itemStack.getType()) dropItemStack.setAmount(dropItemStack.getAmount() - 1);
+            if (dropItemStack.getAmount() == 0) continue;
+
+            DropUtil.dropItem(cropBlock, dropItemStack);
+        }
+
+        dispenser.getWorld().spawnParticle(Particle.SMOKE_NORMAL, cropBlock.getLocation(), 100);
+
+        SoundUtil.playSound(cropBlock, Sound.BLOCK_DISPENSER_FAIL);
+        SoundUtil.playSound(cropBlock, config.getString("sound"));
+
+        cropAgeable.setAge(0);
+        cropBlock.setBlockData(cropAgeable);
+        e.setCancelled(true);
     }
 }

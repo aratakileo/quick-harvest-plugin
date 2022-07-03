@@ -1,5 +1,9 @@
 sound: minecraft:block.composter.ready
 
+feature:
+  player: true
+  dispenser: true
+
 reason:
   minecraft:wheat_seeds:
     target: minecraft:wheat
