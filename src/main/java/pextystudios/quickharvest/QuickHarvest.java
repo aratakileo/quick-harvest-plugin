@@ -10,7 +10,10 @@ public final class QuickHarvest extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         instance = this;
+
         saveDefaultConfig();
+        reloadConfig();
+
         Bukkit.getPluginManager().registerEvents(new EventListener(), this);
     }
 
