@@ -1,12 +1,12 @@
-sound: minecraft:block.composter.ready
+sound: minecraft:block.composter.ready  # played sound when quick harvest
 
 feature:
-  player: true
-  dispenser: true
+  player: true  # quick harvest by right-click
+  dispenser: true  # quick harvest by dispenser
 
 reason:
-  minecraft:wheat_seeds:
-    target: minecraft:wheat
+  minecraft:wheat_seeds:  # item in hand
+    target: minecraft:wheat  # harvest block (works when harvest age equals max age)
 
   minecraft:beetroot_seeds:
     target: minecraft:beetroots
