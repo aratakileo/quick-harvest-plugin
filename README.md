@@ -13,4 +13,4 @@ Plugin that let you harvest the plants by right-clicking and automatic replant i
   - `minecraft:nether_wart`
   - `minecraft:cocoa`
 
-[[Download latest version]](https://github.com/TeaCondemns/quick-harvest-plugin/releases/tag/basic-functionality)
+[[Download latest version]](https://github.com/TeaCondemns/quick-harvest-plugin/releases/tag/normal-functionality)
