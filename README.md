@@ -13,4 +13,32 @@ Plugin that let you harvest the plants by right-clicking and automatic replant i
   - `minecraft:nether_wart`
   - `minecraft:cocoa`
 
+### Settings in `config.yml`
+```yml
+sound: minecraft:block.composter.ready  # played sound when quick harvest
+
+feature:
+  player: true  # quick harvest by right-click
+  dispenser: true  # quick harvest by dispenser
+
+reason:
+  minecraft:wheat_seeds:  # item in hand
+    target: minecraft:wheat  # harvest block (works when harvest age equals max age)
+
+  minecraft:beetroot_seeds:
+    target: minecraft:beetroots
+
+  minecraft:potato:
+    target: minecraft:potatoes
+
+  minecraft:carrot:
+    target: minecraft:carrots
+
+  minecraft:nether_wart:
+    target: minecraft:nether_wart
+
+  minecraft:cocoa_beans:
+    target: minecraft:cocoa
+```
+
 [[Download latest version]](https://github.com/TeaCondemns/quick-harvest-plugin/releases/tag/normal-functionality)
