@@ -1,7 +1,4 @@
-![Java-runtime-beta Screenshot 2022 06 23 - 19 31 35 65](https://user-images.githubusercontent.com/83653555/176735339-61d07497-8f9f-406f-9993-db764d1f525f.png)
-![Java-runtime-beta Screenshot 2022 07 03 - 19 25 24 48](https://user-images.githubusercontent.com/83653555/177048584-210fc4b7-a637-42b7-b846-94989fccadc4.png)
-
-# Quick Harvest [plugin for minecraft 1.13+]
+# Quick Harvest [plugin for minecraft 1.13+] <img src="https://github.com/teacondemns/static.pexty.xyz/blob/main/src/icon/emoji/animated/minecraft.gif?raw=true" height="35"/>
 Plugin that let you harvest the plants by right-clicking and automatic replant it again!
 - Quick harvest by dispenser! (You can disable this feature in plugin config)
 - Quick harvest by right click! (You can disable this feature in plugin config)
@@ -12,6 +9,10 @@ Plugin that let you harvest the plants by right-clicking and automatic replant i
   - `minecraft:carrots`
   - `minecraft:nether_wart`
   - `minecraft:cocoa`
+
+### Preview
+![](https://user-images.githubusercontent.com/83653555/176735339-61d07497-8f9f-406f-9993-db764d1f525f.png)
+![](https://user-images.githubusercontent.com/83653555/177048584-210fc4b7-a637-42b7-b846-94989fccadc4.png)
 
 ### Settings in `config.yml`
 ```yml
