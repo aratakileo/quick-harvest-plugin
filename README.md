@@ -1,4 +1,4 @@
-# Quick Harvest [plugin for minecraft 1.13+] <img src="https://github.com/teacondemns/static.pexty.xyz/blob/main/src/icon/emoji/animated/minecraft.gif?raw=true" height="35"/>
+# Quick Harvest [plugin for minecraft 1.13+] <img src="https://github.com/teacondemns/static.pexty.xyz/blob/main/src/emoji/animated/minecraft.gif?raw=true" height="35"/>
 Plugin that let you harvest the plants by pressing <img src="https://github.com/teacondemns/static.pexty.xyz/blob/main/src/icon/controller/mouse-right.png?raw=true" height="20"/> and automatic replant it again!
 - Quick harvest by dispenser! (You can disable this feature in plugin config)
 - To quick harvest press <img src="https://github.com/teacondemns/static.pexty.xyz/blob/main/src/icon/controller/mouse-right.png?raw=true" height="20"/>! (You can disable this feature in plugin config)
