@@ -42,4 +42,4 @@ reason:
     target: minecraft:cocoa
 ```
 
-[[Download latest version]](https://github.com/TeaCondemns/quick-harvest-plugin/releases/tag/normal-functionality)
+[[Download latest version]](https://github.com/aratakileo/quick-harvest-plugin/releases/tag/normal-functionality)
