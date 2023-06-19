@@ -1,5 +1,12 @@
-# Quick Harvest [plugin for minecraft 1.13+] <img src="https://github.com/teacondemns/static.pexty.xyz/blob/main/src/emoji/animated/minecraft.gif?raw=true" height="35"/>
+# Quick Harvest [1.13+] <img src="https://github.com/teacondemns/static.pexty.xyz/blob/main/src/emoji/animated/minecraft.gif?raw=true" height="35"/>
 Plugin that let you harvest the plants by pressing <img src="https://github.com/teacondemns/static.pexty.xyz/blob/main/src/icon/controller/mouse-right.png?raw=true" height="20"/> and automatic replant it again!
+- [Features](#features)
+- [Default settings in `config.yml`](#default-settings-in-configyml)
+
+![](preview/preview-1.png)
+![](preview/preview-2.png)
+
+### Features
 - Quick harvest by dispenser! (You can disable this feature in plugin config)
 - To quick harvest press <img src="https://github.com/teacondemns/static.pexty.xyz/blob/main/src/icon/controller/mouse-right.png?raw=true" height="20"/>! (You can disable this feature in plugin config)
 - Expand the list of supported plants at your discretion! Currently supported:
@@ -10,11 +17,7 @@ Plugin that let you harvest the plants by pressing <img src="https://github.com/
   - `minecraft:nether_wart`
   - `minecraft:cocoa`
 
-### Preview
-![](https://user-images.githubusercontent.com/83653555/176735339-61d07497-8f9f-406f-9993-db764d1f525f.png)
-![](https://user-images.githubusercontent.com/83653555/177048584-210fc4b7-a637-42b7-b846-94989fccadc4.png)
-
-### Settings in `config.yml`
+### Default settings in `config.yml`
 ```yml
 sound: minecraft:block.composter.ready  # played sound when quick harvest
 
@@ -41,5 +44,3 @@ reason:
   minecraft:cocoa_beans:
     target: minecraft:cocoa
 ```
-
-[[Download latest version]](https://github.com/aratakileo/quick-harvest-plugin/releases/tag/normal-functionality)
