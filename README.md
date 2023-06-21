@@ -1,5 +1,5 @@
 # Quick Harvest [1.13+] <img src="https://github.com/teacondemns/static.pexty.xyz/blob/main/src/emoji/animated/minecraft.gif?raw=true" height="35"/>
-Plugin that let you harvest the plants by pressing <img src="https://github.com/teacondemns/static.pexty.xyz/blob/main/src/icon/controller/mouse-right.png?raw=true" height="20"/> and automatic replant it again!
+Plugin that let players on the server harvest the plants by pressing <img src="https://github.com/teacondemns/static.pexty.xyz/blob/main/src/icon/controller/mouse-right.png?raw=true" height="20"/> and automatic replant it again at the same moment!
 - [Features](#features)
 - [Default settings in `config.yml`](#default-settings-in-configyml)
 
