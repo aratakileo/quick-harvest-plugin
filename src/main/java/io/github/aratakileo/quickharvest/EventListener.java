@@ -42,7 +42,13 @@ public class EventListener implements Listener {
         if (ageable.getAge() != ageable.getMaximumAge()) return;
 
         if (config.getString("feature.player").equals("vanilla")) {
-            block.getDrops().forEach(itemStack -> DropItemUtil.drop(block, itemStack));
+            block.getDrops().forEach(itemStack -> {
+                if (itemInHandStack.getType() == itemStack.getType()) itemStack.setAmount(itemStack.getAmount() - 1);
+                if (itemStack.getAmount() == 0) return;
+
+                DropItemUtil.drop(block, itemStack);
+            });
+
             SoundUtil.playSound(block, config.getString("sound"));
             ageable.setAge(0);
             block.setBlockData(ageable);
@@ -99,25 +105,30 @@ public class EventListener implements Listener {
 
         if (!config.getBoolean("feature.dispenser") || dispenser.getType() != Material.DISPENSER) return;
 
-        ItemStack itemStack = e.getItemStack();
-        String itemKey = itemStack.getType().getKey().asString();
+        ItemStack itemInHandStack = e.getItemStack();
+        String itemInHandKey = itemInHandStack.getType().getKey().asString();
 
-        if (!config.getConfigurationSection("reason").getKeys(false).contains(itemKey)) return;
+        if (!config.getConfigurationSection("reason").getKeys(false).contains(itemInHandKey)) return;
 
         Block cropBlock = dispenser.getRelative(((Directional) dispenser.getBlockData()).getFacing());
 
-        if (!cropBlock.getType().getKey().asString().equals(config.getString("reason." + itemKey + ".target"))) return;
+        if (
+                !cropBlock.getType()
+                        .getKey()
+                        .asString()
+                        .equals(config.getString("reason." + itemInHandKey + ".target"))
+        ) return;
 
         Ageable ageable = (Ageable) cropBlock.getBlockData();
 
         if (ageable.getMaximumAge() != ageable.getAge()) return;
 
-        for (ItemStack dropItemStack: cropBlock.getDrops()) {
-            if (dropItemStack.getType() == itemStack.getType()) dropItemStack.setAmount(dropItemStack.getAmount() - 1);
-            if (dropItemStack.getAmount() == 0) continue;
+        cropBlock.getDrops().forEach(itemStack -> {
+            if (itemStack.getType() == itemInHandStack.getType()) itemStack.setAmount(itemStack.getAmount() - 1);
+            if (itemStack.getAmount() == 0) return;
 
-            DropItemUtil.drop(cropBlock, dropItemStack);
-        }
+            DropItemUtil.drop(cropBlock, itemStack);
+        });
 
         dispenser.getWorld().spawnParticle(Particle.SMOKE_NORMAL, cropBlock.getLocation(), 100);
 
