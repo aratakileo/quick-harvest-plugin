@@ -2,9 +2,9 @@ sound: minecraft:block.composter.ready  # played sound when quick harvest
 
 feature:
   player: default                       # quick harvest by right-click:
-                                        #   default - items will automatically save to inventory
-                                        #   vanilla - items will just drop on the ground
-                                        #   disabled/no/false - completely disable this feature
+                                        #   default - harvested items will automatically save to inventory
+                                        #   vanilla - harvested items will just drop on the ground
+                                        #   disabled - completely disable this feature
 
   dispenser: yes                        # quick harvest by dispenser (yes/no)
 

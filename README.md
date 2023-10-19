@@ -22,12 +22,16 @@ Plugin that let players on the server harvest the plants by pressing <img src="h
 sound: minecraft:block.composter.ready  # played sound when quick harvest
 
 feature:
-  player: true  # quick harvest by right-click
-  dispenser: true  # quick harvest by dispenser
+  player: default                       # quick harvest by right-click:
+                                        #   default - harvested items will automatically save to inventory
+                                        #   vanilla - harvested items will just drop on the ground
+                                        #   disabled - completely disable this feature
+
+  dispenser: yes                        # quick harvest by dispenser (yes/no)
 
 reason:
-  minecraft:wheat_seeds:  # item in hand
-    target: minecraft:wheat  # harvest block (works when harvest age equals max age)
+  minecraft:wheat_seeds:                # item in hand
+    target: minecraft:wheat             # harvest block (works when harvest age equals max age)
 
   minecraft:beetroot_seeds:
     target: minecraft:beetroots
@@ -43,4 +47,5 @@ reason:
 
   minecraft:cocoa_beans:
     target: minecraft:cocoa
+
 ```
