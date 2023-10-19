@@ -1,4 +1,4 @@
-package pextystudios.quickharvest.util;
+package io.github.aratakileo.quickharvest.util;
 
 import org.bukkit.Location;
 import org.bukkit.Sound;

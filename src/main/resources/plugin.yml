@@ -1,6 +1,7 @@
 name: QuickHarvest
-version: 1.2.0
-main: pextystudios.quickharvest.QuickHarvest
+version: '${version}'
+main: io.github.aratakileo.quickharvest.QuickHarvest
 api-version: 1.13
 authors: [ Arataki Leo ]
-description: Harvest the plants by right-clicking and replant again
+description: Plugin that let players on the server harvest the plants by pressing right click and automatic replant it again at the same moment!
+website: https://github.com/aratakileo/quick-harvest-plugin
