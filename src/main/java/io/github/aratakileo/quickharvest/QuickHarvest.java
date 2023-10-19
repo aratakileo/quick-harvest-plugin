@@ -1,4 +1,4 @@
-package pextystudios.quickharvest;
+package io.github.aratakileo.quickharvest;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;

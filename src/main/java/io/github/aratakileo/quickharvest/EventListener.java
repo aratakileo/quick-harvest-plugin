@@ -1,4 +1,4 @@
-package pextystudios.quickharvest;
+package io.github.aratakileo.quickharvest;
 
 import io.papermc.paper.event.block.BlockPreDispenseEvent;
 import org.bukkit.Material;
@@ -15,31 +15,45 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import pextystudios.quickharvest.util.DropUtil;
-import pextystudios.quickharvest.util.SoundUtil;
+import io.github.aratakileo.quickharvest.util.DropItemUtil;
+import io.github.aratakileo.quickharvest.util.SoundUtil;
 
 public class EventListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         @NotNull FileConfiguration config = QuickHarvest.getInstance().getConfig();
 
-        if (!config.getBoolean("feature.player") || e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if ("no false disabled".contains(
+                config.getString("feature.player")
+        ) || e.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
         Block block = e.getClickedBlock();
         String blockKey = block.getType().getKey().asString();
-        ItemStack itemStack = e.getItem();
-        String itemKey = e.getMaterial().getKey().asString();
+        ItemStack itemInHandStack = e.getItem();
+        String itemInHandKey = e.getMaterial().getKey().asString();
 
-        if (!config.getConfigurationSection("reason").getKeys(false).contains(itemKey) || !blockKey.equals(config.getString("reason." + itemKey + ".target"))) return;
+        if (
+                !config.getConfigurationSection("reason").getKeys(false).contains(itemInHandKey)
+                        || !blockKey.equals(config.getString("reason." + itemInHandKey + ".target"))
+        ) return;
 
-        Ageable ageable = (Ageable) block.getBlockData();
+        Ageable ageable = (Ageable)block.getBlockData();
 
         if (ageable.getAge() != ageable.getMaximumAge()) return;
+
+        if (config.getString("feature.player").equals("vanilla")) {
+            block.getDrops().forEach(itemStack -> DropItemUtil.drop(block, itemStack));
+            SoundUtil.playSound(block, config.getString("sound"));
+            ageable.setAge(0);
+            block.setBlockData(ageable);
+
+            return;
+        }
 
         Inventory pInv = e.getPlayer().getInventory();
 
         for (ItemStack dropItemStack : block.getDrops()) {
-            if (itemStack != null && itemStack.getType() == dropItemStack.getType())
+            if (itemInHandStack != null && itemInHandStack.getType() == dropItemStack.getType())
                 dropItemStack.setAmount(dropItemStack.getAmount() - 1);
 
             if (pInv.firstEmpty() == -1) {
@@ -65,15 +79,15 @@ public class EventListener implements Listener {
                 pInv.addItem(dropItemStack.clone());
 
                 dropItemStack.setAmount(dropItemDropAmount);
-                DropUtil.dropItem(block, dropItemStack);
+                DropItemUtil.drop(block, dropItemStack);
 
                 continue;
             }
 
             pInv.addItem(dropItemStack);
         }
-        SoundUtil.playSound(block, config.getString("sound"));
 
+        SoundUtil.playSound(block, config.getString("sound"));
         ageable.setAge(0);
         block.setBlockData(ageable);
     }
@@ -94,15 +108,15 @@ public class EventListener implements Listener {
 
         if (!cropBlock.getType().getKey().asString().equals(config.getString("reason." + itemKey + ".target"))) return;
 
-        Ageable cropAgeable = (Ageable) cropBlock.getBlockData();
+        Ageable ageable = (Ageable) cropBlock.getBlockData();
 
-        if (cropAgeable.getMaximumAge() != cropAgeable.getAge()) return;
+        if (ageable.getMaximumAge() != ageable.getAge()) return;
 
         for (ItemStack dropItemStack: cropBlock.getDrops()) {
             if (dropItemStack.getType() == itemStack.getType()) dropItemStack.setAmount(dropItemStack.getAmount() - 1);
             if (dropItemStack.getAmount() == 0) continue;
 
-            DropUtil.dropItem(cropBlock, dropItemStack);
+            DropItemUtil.drop(cropBlock, dropItemStack);
         }
 
         dispenser.getWorld().spawnParticle(Particle.SMOKE_NORMAL, cropBlock.getLocation(), 100);
@@ -110,8 +124,8 @@ public class EventListener implements Listener {
         SoundUtil.playSound(cropBlock, Sound.BLOCK_DISPENSER_FAIL);
         SoundUtil.playSound(cropBlock, config.getString("sound"));
 
-        cropAgeable.setAge(0);
-        cropBlock.setBlockData(cropAgeable);
+        ageable.setAge(0);
+        cropBlock.setBlockData(ageable);
         e.setCancelled(true);
     }
 }
